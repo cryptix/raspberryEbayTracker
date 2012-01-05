@@ -24,11 +24,9 @@
 				
 				function plotData(data) {
 					$.plot($('#combined > .bidPlot'), data, plotOpts);
-					/*
 					Object.keys(data).forEach(function(id) {
 						$.plot($('#' + data[id].label + ' > .bidPlot'), [data[id]], plotOpts);
 					});
-					*/
 				}
 				
 				function pullData() {

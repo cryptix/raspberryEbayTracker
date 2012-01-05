@@ -28,12 +28,6 @@ var router = new director.http.Router({
 		get: function(route) { 
 			file.serveFile('index.html', 200, {}, this.req, this.res);
 		 }
-	},
-	'/code.tar': {
-		get: function(route) { 
-			file.serveFile('code.tar', 200, {}, this.req, this.res);
-		 }
-		
 	}
 });
 
@@ -79,8 +73,8 @@ function fetchAuctionData() {
 				if (typeof els[i] !== 'undefined') {
 					// ammount
 					if (els[i].children.length === 1 && els[i].children[0].tagName === 'SPAN') {
-						bid[0] = j++;
-						//bid[1] = parseInt(els[i].children[0].innerHTML.substr(1).replace(',',''));
+						//bid[0] = j++;
+						bid[1] = parseInt(els[i].children[0].innerHTML.substr(1).replace(',',''));
 					}
 					// time
 					if (els[i].children.length === 1 && els[i].children[0].tagName === 'DIV') {
@@ -109,8 +103,8 @@ function fetchAuctionData() {
 						console.log('date: ' + bidDate.toGMTString());
 						*/
 						
-						//bid[1] = Date.parse(bidDay + ' ' + bidTime)	;
-						bid[1] = j++;
+						//bid[1] = Date.parse(bidDay + ' ' + bidTime);
+						bid[0] = j++;
 					}
 					if(Object.keys(bid).length === 2) {
 						bids.push(bid);
