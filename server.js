@@ -52,7 +52,7 @@ function fetchAuctionData() {
 
 	var auctionIds = [180786734741, 180786751081, 180786864217, 180786865158, 180786865908, 180786866596, 180786867221, 180786868894, 180786868461, 180786867900];
 	auctionIds.forEach(function (id) {
-		jsdom.env("http://offer.ebay.co.uk/ws/eBayISAPI.dll?ViewBids&_trksid=p4340.l2565&rt=nc&item=" + id, [
+		jsdom.env("http://offer.ebay.co.uk/ws/eBayISAPI.dll?ViewBids&showauto=true&item=" + id, [
 		  //'http://code.jquery.com/jquery-1.5.min.js'
 		],
 		function(errors, window) {
@@ -60,44 +60,33 @@ function fetchAuctionData() {
 				console.warn(errors);
 				return;
 			}
-			var els = window.document.getElementsByClassName('contentValueFont');
+			var rows = window.document.getElementsByClassName('tabHeadDesign');
+			rows = rows[0].parentNode.children;
+			rows = Array.prototype.slice.call(rows, 1, rows.length-3);
 			var bids = [];
-			var bid = [];
-			var j = 0;
-			for (var i = els.length - 1; i >= 0; i--) {
-				if (typeof els[i] !== 'undefined') {
-
+			for (var i = rows.length - 1; i >= 0; i--) {
+				if (typeof rows[i] !== 'undefined') {
+					var bid = [];
 					// ammount
-					if (els[i].children.length === 1 && els[i].children[0].tagName === 'SPAN') {
-						//bid[0] = j++;
-						bid[1] = parseInt(els[i].children[0].innerHTML.substr(1).replace(',',''));
-					}
+					bid[1] = parseInt(rows[i].children[2].children[0].innerHTML.substr(1).replace(',',''));
 
 					// time
-					if (els[i].children.length === 1 && els[i].children[0].tagName === 'DIV') {
-						// ugliest date parsing i wrote yet.
-						// even worse because the ploting lib cant take that big x values
-						// day: 31-Dec-11
-						// timestr: 22:17:48 GMT
-						var bidTime = els[i].children[0].children[1].innerHTML;
-						var bidDay = els[i].children[0].children[0].innerHTML;
-						var bidDate = new Date(Date.parse(bidDay + ' ' + bidTime));
-						/* old parsing.. Date.parse() is cleaner i guess
-						var bidTime = els[i].children[0].children[1].innerHTML.split(' ')[0].split(':');
-						var bidDay = els[i].children[0].children[0].innerHTML.split('-');
-						var bidDate = new Date(2000 + parseInt(bidDay[2]),bidDay[1] === "Jan" ? 0 : 11,bidDay[0],parseInt(bidTime[0])+1,bidTime[1],bidTime[2]);
-						console.log('time: %j', bidTime);
-						console.log('day: %j', bidDay);
-						console.log('date: ' + bidDate.toGMTString());
-						*/
-						//bid[0] = Math.round(bidDate/360000);
-						bid[0] = (bidDate.valueOf()-1325369337000)/4545780;
-						//bid[0] = j++;
-					}
-					if(bid.length === 2) {
-						bids.push(bid);
-						bid = [];
-					}
+					// ugliest date parsing i wrote yet.
+					// even worse because the ploting lib cant take that big x values
+					// day: 31-Dec-11
+					// timestr: 22:17:48 GMT
+					var bidTime = rows[i].children[3].children[0].children[1].innerHTML;
+					var bidDay  = rows[i].children[3].children[0].children[0].innerHTML;
+					var bidDate = new Date(Date.parse(bidDay + ' ' + bidTime));
+
+					/*
+					console.log('date: ' + rows[i].children[3].children[0].children[1].innerHTML);
+					console.log('time: %j', bidTime);
+					console.log('day: %j', bidDay);
+					console.log('date: ' + bidDate.toGMTString());
+					*/
+					bid[0] = (bidDate.valueOf()-1325369337000)/4545780;
+					bids.push(bid);
 				}
 			}
 			pies.push({ 
