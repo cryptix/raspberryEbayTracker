@@ -6,17 +6,14 @@ var static = require('node-static');
 var director = require('director');
 var jsdom = require('jsdom');
 
-
 // hold parsed bids data in this object
 var pies = [];	
-
 
 // static file server
 var file = new(static.Server)('./public');
 
 //
 // define a routing table.
-//
 var router = new director.http.Router({
 	'/bids': { 
 		get: function (route) {
@@ -34,7 +31,6 @@ var router = new director.http.Router({
 //
 // setup a server and when there is a request, dispatch the
 // route that was requestd in the request object.
-//
 var server = http.createServer(function (req, res) {
   router.dispatch(req, res, function (err) {
     if (err) {
@@ -48,14 +44,13 @@ var server = http.createServer(function (req, res) {
 // inital get bid data
 function fetchAuctionData() {
 	Object.keys(pies).forEach(function(id) {
-		console.log(pies[id].label + ' has ' + pies[id]['data'].length + 'bids.');
+		console.log(pies[id].label + ' has ' + pies[id]['data'].length + ' bids.');
 	});
 	console.log('fetching new auction data..');
-	
-	
-	var auctionIds = [180786734741, 180786751081, 180786864217, 180786865158, 180786865908, 180786866596, 180786867221, 180786868894, 180786868461, 180786867900];
 
 	pies = [];
+
+	var auctionIds = [180786734741, 180786751081, 180786864217, 180786865158, 180786865908, 180786866596, 180786867221, 180786868894, 180786868461, 180786867900];
 	auctionIds.forEach(function (id) {
 		jsdom.env("http://offer.ebay.co.uk/ws/eBayISAPI.dll?ViewBids&_trksid=p4340.l2565&rt=nc&item=" + id, [
 		  //'http://code.jquery.com/jquery-1.5.min.js'
@@ -71,11 +66,13 @@ function fetchAuctionData() {
 			var j = 0;
 			for (var i = els.length - 1; i >= 0; i--) {
 				if (typeof els[i] !== 'undefined') {
+
 					// ammount
 					if (els[i].children.length === 1 && els[i].children[0].tagName === 'SPAN') {
 						//bid[0] = j++;
 						bid[1] = parseInt(els[i].children[0].innerHTML.substr(1).replace(',',''));
 					}
+
 					// time
 					if (els[i].children.length === 1 && els[i].children[0].tagName === 'DIV') {
 						// ugliest date parsing i wrote yet.
@@ -84,29 +81,20 @@ function fetchAuctionData() {
 						// timestr: 22:17:48 GMT
 						var bidTime = els[i].children[0].children[1].innerHTML;
 						var bidDay = els[i].children[0].children[0].innerHTML;
-						//var bidDate = new Date()
-						/*
+						var bidDate = new Date(Date.parse(bidDay + ' ' + bidTime));
+						/* old parsing.. Date.parse() is cleaner i guess
 						var bidTime = els[i].children[0].children[1].innerHTML.split(' ')[0].split(':');
 						var bidDay = els[i].children[0].children[0].innerHTML.split('-');
-						
-						var bidDate = new Date(
-							2000 + parseInt(bidDay[2]),
-							bidDay[1] === "Jan" ? 0 : 11,
-							bidDay[0],
-							parseInt(bidTime[0])+1,
-							bidTime[1],
-							bidTime[2]
-						);
-						
+						var bidDate = new Date(2000 + parseInt(bidDay[2]),bidDay[1] === "Jan" ? 0 : 11,bidDay[0],parseInt(bidTime[0])+1,bidTime[1],bidTime[2]);
 						console.log('time: %j', bidTime);
 						console.log('day: %j', bidDay);
 						console.log('date: ' + bidDate.toGMTString());
 						*/
-						
-						//bid[1] = Date.parse(bidDay + ' ' + bidTime);
-						bid[0] = j++;
+						//bid[0] = Math.round(bidDate/360000);
+						bid[0] = (bidDate.valueOf()-1325369337000)/4545780;
+						//bid[0] = j++;
 					}
-					if(Object.keys(bid).length === 2) {
+					if(bid.length === 2) {
 						bids.push(bid);
 						bid = [];
 					}
@@ -118,10 +106,12 @@ function fetchAuctionData() {
 			});
 		});
 	});
+
 }
 setInterval(fetchAuctionData, 1000 * 60 * 3);
 fetchAuctionData();
 
-server.listen(8080, function() {
-	console.log('http listening');
+var port = 8080;
+server.listen(port, function() {
+	console.log('http listening on port ' + port);
 });
