@@ -6,6 +6,7 @@
 		<style type="text/css" media="screen">
 			li { float: left; }
 			.bidPlot { width: 600px; height: 300px; }
+			.bigBidPlot { width: 1200px; height: 500px; }
 		</style>
 		<script src="http://code.jquery.com/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="http://flot.googlecode.com/svn/trunk/jquery.flot.js" type="text/javascript" charset="utf-8"></script>
@@ -14,11 +15,12 @@
 				var plotOpts = {
 			        lines: { show: true },
 			        points: { show: true },
+					legend: { noColumns: 5 },
 			        xaxis: { tickDecimals: 0, tickSize: 1 }
 			    };
 				
 				function plotData(data) {
-					$.plot($('#combined > .bidPlot'), data, plotOpts);
+					$.plot($('#combined > .bigBidPlot'), data, plotOpts);
 					Object.keys(data).forEach(function(id) {
 						$.plot($('#' + data[id].label + ' > .bidPlot'), [data[id]], plotOpts);
 					});
@@ -33,13 +35,13 @@
 		        	});
 				}
 				
-				setInterval(pullData,1000*60*3);
+				setInterval(pullData,1000*30);
 				$('#update').click(pullData);
 	        	pullData();
 				
 			});
 		</script>
-		
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 	</head>
 	<body onload="">
 		<h1 id="raspberry_pi_bidding">Raspberry Pi Ebay Tracking</h1>
@@ -55,22 +57,21 @@
 		<br>
 		<button id='update'>Update Data</button>
 		<div id="combined">
-			<h2>All Combined</h2>
-			<div class="bidPlot"></div>
+			<h2><a href="http://www.ebay.co.uk/sch/raspberry_pi/m.html">All Combined</a></h2>
+			<div class="bigBidPlot"></div>
 		</div>
 		<h2>Single Auctions</h2>
-		<ol id="bids">
-			<li id="180786734741"><h2>180786734741</h2><div class="bidPlot"></div></li>
-			<li id="180786751081"><h2>180786751081</h2><div class="bidPlot"></div></li>
-			<li id="180786864217"><h2>180786864217</h2><div class="bidPlot"></div></li>
-			<li id="180786865158"><h2>180786865158</h2><div class="bidPlot"></div></li>
-			<li id="180786865908"><h2>180786865908</h2><div class="bidPlot"></div></li>
-			<li id="180786866596"><h2>180786866596</h2><div class="bidPlot"></div></li>
-			<li id="180786867221"><h2>180786867221</h2><div class="bidPlot"></div></li>
-			<li id="180786868894"><h2>180786868894</h2><div class="bidPlot"></div></li>
-			<li id="180786868461"><h2>180786868461</h2><div class="bidPlot"></div></li>
-			<li id="180786867900"><h2>180786867900</h2><div class="bidPlot"></div></li>
-		</ol>
-		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		<ul id="bids">
+			<li id="180786734741"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786734741">Raspberry Pi Model B beta board - #10</a></h2><div class="bidPlot"></div></li>
+			<li id="180786751081"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786751081">Raspberry Pi Model B beta board - #09</a></h2><div class="bidPlot"></div></li>
+			<li id="180786864217"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786864217">Raspberry Pi Model B beta board - #08</a></h2><div class="bidPlot"></div></li>
+			<li id="180786865158"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786865158">Raspberry Pi Model B beta board - #07</a></h2><div class="bidPlot"></div></li>
+			<li id="180786865908"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786865908">Raspberry Pi Model B beta board - #06</a></h2><div class="bidPlot"></div></li>
+			<li id="180786866596"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786866596">Raspberry Pi Model B beta board - #05</a></h2><div class="bidPlot"></div></li>
+			<li id="180786867221"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786867221">Raspberry Pi Model B beta board - #04</a></h2><div class="bidPlot"></div></li>
+			<li id="180786867900"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786867900">Raspberry Pi Model B beta board - #03</a></h2><div class="bidPlot"></div></li>
+			<li id="180786868461"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786868461">Raspberry Pi Model B beta board - #02</a></h2><div class="bidPlot"></div></li>
+			<li id="180786868894"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786868894">Raspberry Pi Model B beta board - #01</a></h2><div class="bidPlot"></div></li>
+		</ul>
 	</body>
 </html>
