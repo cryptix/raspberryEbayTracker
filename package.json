@@ -1,6 +1,5 @@
 {
   "name": "raspberryEbayTracker",
-  "subdomain": "raspTracker",
   "scripts": {
     "start": "server.js"
   },
@@ -9,8 +8,5 @@
     "node-static": "*",
     "director": "*",
     "jsdom": "*",
-    "request": "*",
-    "cssom": "*",
-    "contextify": "*"
   }
 }
