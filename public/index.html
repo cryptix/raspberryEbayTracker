@@ -4,55 +4,30 @@
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>Charting Raspberry Pi bidding</title>
 		<style type="text/css" media="screen">
-			li { float: left; }
+			#templates {display:none;}
+			/*li { float: left; }*/
 			.bidPlot { width: 600px; height: 300px; }
 			.bigBidPlot { width: 1200px; height: 500px; }
 		</style>
 		<script src="http://code.jquery.com/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="http://flot.googlecode.com/svn/trunk/jquery.flot.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript" charset="utf-8">
-			$(function() {
-				var plotOpts = {
-			        lines: { show: true },
-			        points: { show: true },
-					legend: { noColumns: 5 },
-			        xaxis: { tickDecimals: 0, tickSize: 1 }
-			    };
-				
-				function plotData(data) {
-					$.plot($('#combined > .bigBidPlot'), data, plotOpts);
-					Object.keys(data).forEach(function(id) {
-						$.plot($('#' + data[id].label + ' > .bidPlot'), [data[id]], plotOpts);
-					});
-				}
-				
-				function pullData() {
-		        	$.ajax({
-		            	url: '/bids',
-		            	method: 'GET',
-		            	dataType: 'json',
-		        		success: plotData
-		        	});
-				}
-				
-				setInterval(pullData,1000*30);
-				$('#update').click(pullData);
-	        	pullData();
-				
-			});
-		</script>
+		<script src="https://raw.github.com/flatiron/plates/master/lib/plates.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/client.js" type="text/javascript" charset="utf-8"></script>
 		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 	</head>
-	<body onload="">
+	<body>
+		<div id='site'>
 		<h1 id="raspberry_pi_bidding">Raspberry Pi Ebay Tracking</h1>
-		<h2>Hello</h2>
-		<p>I made this small side to visualize the auction progress of the first ten beta boards.<p>
-		<p>The server fetches new biding data every <strong>3</strong> minutes. Site refreshes automatically, too.<p>
-		<p>I invite everyone interested in this to give this side a better outfit. Frontends are not my strong suite.<p>
-		<p>Contact me on twitter or github if you like.
-			<a href="https://twitter.com/intent/tweet?screen_name=cryp7ix" class="twitter-mention-button" data-lang="en">tweet to @cryp7ix</a>
-			<a href="http://github.com/cryptix/raspberryEbayTracker"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a>
-		<p>
+		<div id='hello'>
+			<h2>Hello</h2>
+			<p>I made this small side to visualize the auction progress of the first ten beta boards.<p>
+			<p>The server fetches new biding data every <strong>3</strong> minutes. Site refreshes automatically, too.<p>
+			<p>I invite everyone interested in this to give this side a better outfit. Frontends are not my strong suite.<p>
+			<p>Contact me on twitter or github if you like.
+				<a href="https://twitter.com/intent/tweet?screen_name=cryp7ix" class="twitter-mention-button" data-lang="en">tweet to @cryp7ix</a>
+				<a href="http://github.com/cryptix/raspberryEbayTracker"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a>
+			</p>
+		</div><!-- /hello -->
 		<br>
 		<br>
 		<button id='update'>Update Data</button>
@@ -61,17 +36,24 @@
 			<div class="bigBidPlot"></div>
 		</div>
 		<h2>Single Auctions</h2>
-		<ul id="bids">
-			<li id="180786734741"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786734741">Raspberry Pi Model B beta board - #10</a></h2><div class="bidPlot"></div></li>
-			<li id="180786751081"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786751081">Raspberry Pi Model B beta board - #09</a></h2><div class="bidPlot"></div></li>
-			<li id="180786864217"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786864217">Raspberry Pi Model B beta board - #08</a></h2><div class="bidPlot"></div></li>
-			<li id="180786865158"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786865158">Raspberry Pi Model B beta board - #07</a></h2><div class="bidPlot"></div></li>
-			<li id="180786865908"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786865908">Raspberry Pi Model B beta board - #06</a></h2><div class="bidPlot"></div></li>
-			<li id="180786866596"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786866596">Raspberry Pi Model B beta board - #05</a></h2><div class="bidPlot"></div></li>
-			<li id="180786867221"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786867221">Raspberry Pi Model B beta board - #04</a></h2><div class="bidPlot"></div></li>
-			<li id="180786867900"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786867900">Raspberry Pi Model B beta board - #03</a></h2><div class="bidPlot"></div></li>
-			<li id="180786868461"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786868461">Raspberry Pi Model B beta board - #02</a></h2><div class="bidPlot"></div></li>
-			<li id="180786868894"><h2><a href="http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=180786868894">Raspberry Pi Model B beta board - #01</a></h2><div class="bidPlot"></div></li>
+		<ul id="boards">
+
 		</ul>
+		</div><!-- /site -->
+		<div id='templates'>
+			<div id='singleBoard'>
+<li>
+	<div class='auctionId' id=''>
+		<h2 class='name'></h2>
+		<div class="bidInfo">
+			<p>Currently at:<span data-bind-highest="highest"></span>
+			<a class='ebayLink' href="">Ebay Auction Site</a>
+			</p>
+		</div>
+		<div class="bidPlot"></div>
+	</div>
+</li>
+			</div>
+	  </div>
 	</body>
 </html>
