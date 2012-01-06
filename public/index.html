@@ -6,12 +6,14 @@
 		<style type="text/css" media="screen">
 			#templates {display:none;}
 			/*li { float: left; }*/
-			.bidPlot { width: 600px; height: 300px; }
-			.bigBidPlot { width: 1200px; height: 500px; }
+			.smallPlot { width: 600px; height: 300px; }
+			#overview { width:600px;height:50px}
+			#bigPlot { width: 1200px; height: 500px; }
 		</style>
 		<script src="http://code.jquery.com/jquery-1.6.1.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="http://flot.googlecode.com/svn/trunk/jquery.flot.js" type="text/javascript" charset="utf-8"></script>
 		<script src="https://raw.github.com/flatiron/plates/master/lib/plates.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/jquery.flot.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/jquery.flot.selection.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/client.js" type="text/javascript" charset="utf-8"></script>
 		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 	</head>
@@ -33,8 +35,10 @@
 		<button id='update'>Update Data</button>
 		<div id="combined">
 			<h2><a href="http://www.ebay.co.uk/sch/raspberry_pi/m.html">All Combined</a></h2>
-			<div class="bigBidPlot"></div>
+			<div id="bigPlot"></div>
+			<div id="overview"></div>
 		</div>
+
 		<h2>Single Auctions</h2>
 		<ul id="boards">
 
@@ -50,7 +54,7 @@
 			<a class='ebayLink' href="">Ebay Auction Site</a>
 			</p>
 		</div>
-		<div class="bidPlot"></div>
+		<div class="smallPlot"></div>
 	</div>
 </li>
 			</div>
