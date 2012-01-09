@@ -33,26 +33,31 @@
 		<br>
 		<br>
 		<button id='update'>Update Data</button>
+		<h2>Overview</h2>
 		<div id="combined">
 			<h2><a href="http://www.ebay.co.uk/sch/raspberry_pi/m.html">All Combined</a></h2>
 			<div id="bigPlot"></div>
 			<div id="overview"></div>
 		</div>
 
-		<h2>Single Auctions</h2>
-		<ul id="boards">
-
+		<h2>Running</h2>
+		<ul id="running">
 		</ul>
+
+		<h2>Completed Auctions</h2>
+		<ul id="completed">
+		</ul>
+
 		</div><!-- /site -->
 		<div id='templates'>
 			<div id='singleBoard'>
 <li>
 	<div class='auctionId' id=''>
-		<h2 class='name'></h2>
+		<h3 class='name'></h2>
 		<div class="bidInfo">
-			<p>Currently at:<span data-bind-highest="highest"></span>
+			<p>Highest Bid:<span data-bind-highest="highest"></span></p>
+			<p>Deadline:<span data-bind-deadline="deadline"></span></p>
 			<a class='ebayLink' href="">Ebay Auction Site</a>
-			</p>
 		</div>
 		<div class="smallPlot"></div>
 	</div>

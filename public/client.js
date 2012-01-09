@@ -1,10 +1,10 @@
 $(function() {
 	// plot options
 	var plotOpts = {
-		lines:  { show: true },
+		lines:  { show: true, steps: true },
 		points: { show: true },
 		legend: { noColumns: 5 },
-		yaxis:  { tickSize: 100 },
+		yaxis:  { tickSize: 200 },
 		xaxis:  { mode: "time", tickLength: 5 },
 		grid:   { markings: weekendAreas },
 		selection: { mode: "x" }
@@ -20,14 +20,6 @@ $(function() {
 		selection: { mode: "x" }
 	};
 
-	// info template
-	var html = $('#singleBoard').html();
-	var map = { // template settings
-		"auctionId" : ['class', 'id'],
-		"name": 'class',
-		"highest": ['data-bind-highest'],
-		"ebayLink": ['class', 'href']
-	};
 
 	// draw markings so plot doesnt freak out
 	function weekendAreas(axes) {
@@ -70,6 +62,16 @@ $(function() {
 		});
 	}
 
+	// info template
+	var html = $('#singleBoard').html();
+	var map = { // template settings
+		"auctionId" : ['class', 'id'],
+		"name": 'class',
+		"highest": ['data-bind-highest'],
+		"deadline": ['data-bind-deadline'],
+		"ebayLink": ['class', 'href']
+	};
+
 	// get initial info and build site
 	$.ajax({
 		url: '/info',
@@ -78,7 +80,11 @@ $(function() {
 		success: function(data) {
 			data.forEach(function (d) {
 				var output = Plates.bind(html, d, map);
-				$('#boards').append(output);
+				if(d['completed'] == true) {
+					$('#completed').append(output);
+				} else {
+					$('#running').append(output);
+				}
 			});
 
 			pullBids();

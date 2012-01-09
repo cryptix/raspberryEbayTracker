@@ -81,7 +81,8 @@ function fetchAuctionData() {
 	console.log('fetching fresh auction data..');
 
 	Object.keys(auctionIds).forEach(function (id) {
-		jsdom.env("http://offer.ebay.co.uk/ws/eBayISAPI.dll?ViewBids&showauto=true&item=" + id, [
+		//&showauto=true
+		jsdom.env("http://offer.ebay.co.uk/ws/eBayISAPI.dll?ViewBids&item=" + id, [
 		  //'http://code.jquery.com/jquery-1.5.min.js'
 		],
 		function(errors, window) {
@@ -90,15 +91,27 @@ function fetchAuctionData() {
 				return;
 			}
 
-			var boardInfo = {
-				highest: 0,
-				name: "Board #xx",
-				auctionId: id,
-				ebayLink: 'http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=' + id,
-			};
+			var boardInfo = null;
+			if ( Object.keys(auctionIds[id]['info']).length === 0 ) {
+				auctionIds[id]['info'] = {
+					highest: 0,
+					completed: false,
+					name: "Board #xx",
+					auctionId: id,
+					ebayLink: 'http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=' + id,
+				};
+			} else {
+				boardInfo = auctionIds[id]['info'];
+			}
 
 			// extract boardName
 			var itemTitle = window.document.getElementsByClassName('itemTitle');
+			boardInfo['deadline'] = window.document.getElementsByClassName('titleValueFont')[2].innerHTML;
+			if(itemTitle.length === 0) {
+				// completed board.
+				boardInfo['completed'] = true;
+				itemTitle = window.document.getElementsByClassName('BHitemDesc');
+			}
 			itemTitle = itemTitle[0].innerHTML;
 			var m =  itemTitle.match(/ - #([0-9]+) /);
 			boardInfo['name'] = "Board #" + m[1];
@@ -134,7 +147,6 @@ function fetchAuctionData() {
 					}
 				}
 			}
-			auctionIds[id].info = boardInfo;
 		});
 	});
 }
