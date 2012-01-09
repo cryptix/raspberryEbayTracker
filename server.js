@@ -100,9 +100,8 @@ function fetchAuctionData() {
 					auctionId: id,
 					ebayLink: 'http://www.ebay.co.uk/itm/ws/eBayISAPI.dll?ViewItem&item=' + id,
 				};
-			} else {
-				boardInfo = auctionIds[id]['info'];
 			}
+			boardInfo = auctionIds[id]['info'];
 
 			// extract boardName
 			var itemTitle = window.document.getElementsByClassName('itemTitle');
